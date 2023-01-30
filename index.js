@@ -3,8 +3,8 @@ const morgan = require('morgan')
 const app = express()
 const cors = require('cors')
 const Person = require('./models/person')
-app.use(express.json())
 app.use(express.static('build'))
+app.use(express.json())
 app.use(cors())
 require('dotenv').config()
 
@@ -38,7 +38,7 @@ app.get('/info', (request, response) => {
   })
 })
 
-app.get('/api/persons/:id', (request, response) => {
+app.get('/api/persons/:id', (request, response, next) => {
   Person.findById(request.params.id)
     .then(person => {
       if (person) {
@@ -53,19 +53,18 @@ app.get('/api/persons/:id', (request, response) => {
 app.delete('/api/persons/:id', (request, response, next) => {
   Person.findByIdAndRemove(request.params.id)
     .then(result => {
-      console.log('Done')
       response.status(204).end()
     })
     .catch(error => next(error))
 })
 
-app.put('/api/notes/:id', (request, response, next) => {
+app.put('/api/persons/:id', (request, response, next) => {
   const body = request.body
 
-  const person = new Person({
+  const person = {
     name: body.name,
     number: body.number,
-  })
+  }
 
   Person.findByIdAndUpdate(request.params.id, person, { new: true })
     .then(updatedPerson => {
@@ -76,7 +75,6 @@ app.put('/api/notes/:id', (request, response, next) => {
 
 app.post('/api/persons', (request, response) => {
   const body = request.body
-  console.log(request.body)
 
   if (!body.name) {
     return response.status(400).json({

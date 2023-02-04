@@ -27,10 +27,9 @@ if (name && number) {
   mongoose.set('strictQuery', false)
   mongoose.connect(url)
 
-  person.save().then(result => {
+  person.save().then(
     console.log(`Added ${name} number ${number} to phonebook`)
-    mongoose.connection.close()
-  })
+  ).then(mongoose.connection.close())
 } else {
   mongoose.set('strictQuery', false)
   mongoose.connect(url)

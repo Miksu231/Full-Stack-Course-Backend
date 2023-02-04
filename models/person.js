@@ -5,12 +5,12 @@ const url = process.env.MONGODB_URI
 
 mongoose.set('strictQuery', false)
 mongoose.connect(url)
-.then(result => {
-  console.log('connected to MongoDB')
-})
-.catch((error) => {
-  console.log('error connecting to MongoDB:', error.message)
-})
+  .then(
+    console.log('connected to MongoDB')
+  )
+  .catch((error) => {
+    console.log('error connecting to MongoDB:', error.message)
+  })
 
 const personSchema = new mongoose.Schema({
   name: {
@@ -19,7 +19,7 @@ const personSchema = new mongoose.Schema({
     minLength: 3,
     unique: true
   },
-  number: { 
+  number: {
     type: String,
     minLength: 8,
     match: /^\d{2,3}[-]\d+$|\d{8,}/,

@@ -16,10 +16,13 @@ const personSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
-    minLength: 3
+    minLength: 3,
+    unique: true
   },
   number: { 
     type: String,
+    minLength: 8,
+    match: /^\d{2,3}[-]\d+$|\d{8,}/,
     required: true
   },
 })
